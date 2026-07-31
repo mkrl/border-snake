@@ -30,6 +30,7 @@ body {
     linear-gradient(135deg, #06130f, #020706 65%);
   font-family: "MS Gothic", "Pixel Operator", "Courier New", monospace;
   animation: glow-pulse 6s ease-in-out infinite alternate;
+  touch-action: none;
 }
 
 @keyframes glow-pulse {
@@ -75,7 +76,6 @@ div {
     linear-gradient(90deg, rgb(from var(--game-green) r g b / 0.07) 1px, transparent 1px),
     #071a12;
   background-size: 5% 5%;
-  touch-action: none;
   user-select: none;
 }
 

@@ -188,7 +188,7 @@ document.addEventListener('keydown', (event) => {
   queueDirection(nextDirection)
 })
 
-game.addEventListener(
+document.body.addEventListener(
   'touchstart',
   (event) => {
     const touch = event.changedTouches[0]
@@ -199,7 +199,7 @@ game.addEventListener(
   { passive: true },
 )
 
-game.addEventListener(
+document.body.addEventListener(
   'touchend',
   (event) => {
     const touch = event.changedTouches[0]
@@ -238,7 +238,7 @@ game.addEventListener(
   { passive: true },
 )
 
-game.addEventListener(
+document.body.addEventListener(
   'touchcancel',
   () => {
     touchStart = undefined
