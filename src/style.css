@@ -62,7 +62,7 @@ body::before {
       rgb(from var(--game-green) r g b / calc(var(--glow-intensity) * 0.58));
 }
 
-#snake-game {
+div {
   --food-left: 0px;
   --food-top: 0px;
   position: relative;
@@ -78,7 +78,7 @@ body::before {
   background-size: 5% 5%;
 }
 
-#snake-game::before {
+div::before {
   position: absolute;
   top: calc(var(--food-top) - var(--snake-stroke));
   left: calc(var(--food-left) - var(--snake-stroke));
@@ -92,7 +92,7 @@ body::before {
   content: "";
 }
 
-#snake-game::after {
+div::after {
   position: absolute;
   top: calc(100% + 2.2rem);
   left: 50%;
@@ -116,11 +116,11 @@ body::before {
     --board-size: min(70vmin, 520px);
   }
 
-  #snake-game {
+  div {
     width: var(--board-size);
   }
 
-  #snake-game::after {
+  div::after {
     top: calc(100% + 1rem);
   }
 }

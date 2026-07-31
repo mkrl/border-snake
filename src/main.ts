@@ -5,7 +5,7 @@ type Point = {
 
 const boardSize = 20
 const tickLength = 115
-const gameElement = document.querySelector<HTMLDivElement>('#snake-game')
+const gameElement = document.querySelector<HTMLDivElement>('div')
 
 if (!gameElement) {
   throw new Error('The snake game element is missing.')
