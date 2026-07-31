@@ -70,7 +70,6 @@ div {
   aspect-ratio: 1;
   border: var(--snake-stroke) solid var(--game-green);
   border-shape: path("M 350 350 L 315 350 L 280 350 L 245 350");
-  outline: 1px solid rgb(from var(--game-green) r g b / 0.18);
   background:
     linear-gradient(rgb(from var(--game-green) r g b / 0.07) 1px, transparent 1px),
     linear-gradient(90deg, rgb(from var(--game-green) r g b / 0.07) 1px, transparent 1px),
