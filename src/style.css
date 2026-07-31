@@ -110,6 +110,36 @@ div::after {
   content: attr(data-status);
 }
 
+@supports not (border-shape: path("M 0 0 H 1")) {
+  body {
+    animation: none;
+  }
+
+  body::before,
+  div::before {
+    display: none;
+  }
+
+  div {
+    width: min(88vw, 34rem);
+    aspect-ratio: auto;
+    border: 0;
+    background: none;
+  }
+
+  div::after {
+    position: static;
+    display: block;
+    width: auto;
+    transform: none;
+    color: var(--game-green);
+    font-size: clamp(1rem, 3vmin, 1.35rem);
+    line-height: 1.6;
+    text-shadow: none;
+    content: "border-shape is not supported in this browser :(";
+  }
+}
+
 @media (max-height: 650px) {
   body {
     --board-size: min(70vmin, 520px);
