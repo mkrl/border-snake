@@ -75,6 +75,8 @@ div {
     linear-gradient(90deg, rgb(from var(--game-green) r g b / 0.07) 1px, transparent 1px),
     #071a12;
   background-size: 5% 5%;
+  touch-action: none;
+  user-select: none;
 }
 
 div::before {

@@ -4,7 +4,9 @@ type Point = {
 }
 
 const boardSize = 20
-const tickLength = 115
+const keyboardTickLength = 115
+const touchTickLength = 170
+const swipeThreshold = 18
 const gameElement = document.querySelector<HTMLDivElement>('div')
 
 if (!gameElement) {
@@ -32,6 +34,8 @@ let score: number
 let playing: boolean
 let awaitingStart: boolean
 let lastTick = 0
+let tickLength = keyboardTickLength
+let touchStart: Point | undefined
 
 function samePoint(first: Point, second: Point) {
   return first.x === second.x && first.y === second.y
@@ -63,7 +67,7 @@ function snakePath() {
     .join(' ')
 }
 
-function render(message = `Score ${score} · Arrow keys or WASD`) {
+function render(message = `Score ${score} · Swipe or use arrow keys`) {
   const cellSize = game.getBoundingClientRect().width / boardSize
 
   game.style.setProperty('border-shape', `path("${snakePath()}")`)
@@ -73,7 +77,7 @@ function render(message = `Score ${score} · Arrow keys or WASD`) {
   game.setAttribute('aria-label', `Border-shape snake game. ${message}`)
 }
 
-function reset(startImmediately = false) {
+function reset(startImmediately = false, startedByTouch = false) {
   snake = [
     { x: 9, y: 10 },
     { x: 8, y: 10 },
@@ -85,18 +89,39 @@ function reset(startImmediately = false) {
   score = 0
   playing = startImmediately
   awaitingStart = !startImmediately
+  tickLength = startedByTouch ? touchTickLength : keyboardTickLength
+  if (startImmediately) {
+    lastTick = performance.now()
+  }
   food = placeFood()
   render(
     startImmediately
-      ? `Score ${score} · Arrow keys or WASD`
-      : 'Press an arrow key or WASD to start',
+      ? `Score ${score} · Swipe or use arrow keys`
+      : 'Tap or press an arrow key to start',
   )
 }
 
 function endGame(message: string) {
   playing = false
   awaitingStart = false
-  render(`${message} · Press Enter to play again`)
+  render(`${message} · Tap or press Enter to play again`)
+}
+
+function startGame(startedByTouch: boolean) {
+  playing = true
+  awaitingStart = false
+  tickLength = startedByTouch ? touchTickLength : keyboardTickLength
+  lastTick = performance.now()
+  render()
+}
+
+function queueDirection(nextDirection: Point) {
+  if (
+    nextDirection.x !== -direction.x ||
+    nextDirection.y !== -direction.y
+  ) {
+    queuedDirection = nextDirection
+  }
 }
 
 function update() {
@@ -158,16 +183,68 @@ document.addEventListener('keydown', (event) => {
     if (!awaitingStart) {
       return
     }
-    playing = true
-    awaitingStart = false
+    startGame(false)
   }
-  if (
-    nextDirection.x !== -direction.x ||
-    nextDirection.y !== -direction.y
-  ) {
-    queuedDirection = nextDirection
-  }
+  queueDirection(nextDirection)
 })
+
+game.addEventListener(
+  'touchstart',
+  (event) => {
+    const touch = event.changedTouches[0]
+    if (touch) {
+      touchStart = { x: touch.clientX, y: touch.clientY }
+    }
+  },
+  { passive: true },
+)
+
+game.addEventListener(
+  'touchend',
+  (event) => {
+    const touch = event.changedTouches[0]
+    const start = touchStart
+    touchStart = undefined
+
+    if (!touch || !start) {
+      return
+    }
+
+    const horizontalDistance = touch.clientX - start.x
+    const verticalDistance = touch.clientY - start.y
+
+    if (
+      Math.abs(horizontalDistance) < swipeThreshold &&
+      Math.abs(verticalDistance) < swipeThreshold
+    ) {
+      if (awaitingStart) {
+        startGame(true)
+      } else if (!playing) {
+        reset(true, true)
+      }
+      return
+    }
+
+    if (!playing) {
+      return
+    }
+
+    if (Math.abs(horizontalDistance) > Math.abs(verticalDistance)) {
+      queueDirection({ x: horizontalDistance > 0 ? 1 : -1, y: 0 })
+    } else {
+      queueDirection({ x: 0, y: verticalDistance > 0 ? 1 : -1 })
+    }
+  },
+  { passive: true },
+)
+
+game.addEventListener(
+  'touchcancel',
+  () => {
+    touchStart = undefined
+  },
+  { passive: true },
+)
 
 reset()
 new ResizeObserver(() => render()).observe(game)
