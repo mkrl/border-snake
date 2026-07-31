@@ -1,0 +1,49 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 20% 20%, #272543 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, #1d3f4f 0%, transparent 42%),
+    #070710;
+}
+
+div {
+  width: min(74vmin, 520px);
+  aspect-ratio: 1;
+  border: 18px solid #79e5ff;
+  border-shape: path(
+      "M 6 82 L 6 18 L 26 18 C 41 18 51 26 51 38 C 51 46 46 52 39 54 C 47 56 53 62 53 71 C 53 84 43 92 26 92 L 6 92 L 6 82 Z M 20 32 L 20 48 L 25 48 C 30 48 35 45 35 40 C 35 35 30 32 25 32 L 20 32 Z M 20 61 L 20 78 L 26 78 C 33 78 37 75 37 69 C 37 64 33 61 26 61 L 20 61 Z M 60 18 L 95 18 L 95 32 L 84 32 L 84 92 L 71 92 L 71 32 L 60 32 L 60 18 Z"
+    )
+    view-box;
+  cursor: pointer;
+  background:
+    linear-gradient(140deg, rgba(121, 229, 255, 0.25), rgba(104, 87, 255, 0.12)),
+    radial-gradient(circle at 22% 20%, rgba(255, 255, 255, 0.25) 0 20%, transparent 21%),
+    radial-gradient(circle at 75% 78%, rgba(121, 229, 255, 0.2) 0 18%, transparent 19%),
+    #101426;
+  box-shadow:
+    0 0 10px #79e5ff,
+    0 0 28px rgba(82, 209, 255, 0.75),
+    0 24px 60px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    border-width 220ms ease,
+    box-shadow 220ms ease;
+}
+
+div:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: #b6f4ff;
+  border-width: 22px;
+  box-shadow:
+    0 0 16px #b6f4ff,
+    0 0 38px rgba(92, 220, 255, 0.9),
+    0 30px 72px rgba(0, 0, 0, 0.5);
+}
